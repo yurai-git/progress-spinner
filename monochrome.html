@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Progress spinner: Black</title>
+    <title>Progress spinner: Monochrome</title>
   </head>
   <body>
     <main>
@@ -66,6 +66,16 @@
             }
             to {
               stroke: #202124;
+            }
+          }
+          @media (prefers-color-scheme: dark) {
+            @keyframes colors {
+              from {
+                stroke: #fff;
+              }
+              to {
+                stroke: #fff;
+              }
             }
           }
         </style>
