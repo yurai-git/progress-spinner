@@ -3,7 +3,7 @@ const spinnerPath = document.querySelector('.spinner-path');
 const speedSlider = document.getElementById('speed-slider');
 const monochromeSwitch = document.getElementById('monochrome-switch');
 const body = document.body;
-const closeButton = document.getElementById('close-settings');
+const settingsDialog = document.getElementById('settings');
 
 const params = new URLSearchParams(window.location.search);
 const monochromeRaw = params.get('monochrome');
@@ -18,6 +18,24 @@ const getSpeedFromURL = () => {
   const speed = parseFloat(speedRaw);
   return (!isNaN(speed) && speed >= 0.1 && speed <= 5) ? speed : 1;
 }
+const observeSettingsDialog = new MutationObserver((mutations) => {
+  for (const mutation of mutations) {
+    if (mutation.attributeName === 'open') {
+      const isOpen = settingsDialog.hasAttribute('open');
+      if (!isOpen) {
+        const speed = parseFloat(speedSlider.value).toFixed(1);
+        const isMono = monochromeSwitch.checked;
+
+        const newParams = new URLSearchParams();
+        newParams.set('speed', speed);
+        newParams.set('monochrome', isMono);
+
+        const newURL = `${location.pathname}?${newParams.toString()}`;
+        history.replaceState(null, '', newURL);
+      }
+    }
+  }
+});
 
 let initialSpeed = getSpeedFromURL();
 if (!isNaN(initialSpeed)) {
@@ -41,14 +59,5 @@ monochromeSwitch.addEventListener('change', () => {
     body.classList.remove('monochrome');
   }
 });
-closeButton.addEventListener('click', () => {
-  const speed = parseFloat(speedSlider.value).toFixed(1);
-  const isMono = monochromeSwitch.checked;
 
-  const newParams = new URLSearchParams();
-  newParams.set('speed', speed);
-  newParams.set('monochrome', isMono);
-
-  const newURL = `${location.pathname}?${newParams.toString()}`;
-  history.replaceState(null, '', newURL);
-});
+observeSettingsDialog.observe(settingsDialog, { attributes: true });
