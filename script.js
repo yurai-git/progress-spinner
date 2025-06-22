@@ -4,6 +4,7 @@ const speedSlider = document.getElementById('speed-slider');
 const monochromeSwitch = document.getElementById('monochrome-switch');
 const body = document.body;
 const settingsDialog = document.getElementById('settings');
+const resetButton = document.getElementById('reset-button');
 
 const params = new URLSearchParams(window.location.search);
 const monochromeRaw = params.get('monochrome');
@@ -58,6 +59,14 @@ monochromeSwitch.addEventListener('change', () => {
   } else {
     body.classList.remove('monochrome');
   }
+});
+resetButton.addEventListener('click', () => {
+  speedSlider.value = 1;
+  ui('#speed-slider');
+  monochromeSwitch.checked = false;
+  updateSpeed(1);
+  body.classList.remove('monochrome');
+  history.replaceState(null, '', location.pathname);
 });
 
 observeSettingsDialog.observe(settingsDialog, { attributes: true });
