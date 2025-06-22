@@ -16,30 +16,31 @@
       <nav>
         <button data-ui="#settings" class="transparent circle">
           <i>settings</i>
+          <div class="tooltip bottom">Settings</div>
         </button>
       </nav>
     </header>
     <dialog id="settings">
       <h5>Settings</h5>
-        <nav>
-          <div class="max">
-            <span>Monochrome</span>
-          </div>
-          <label class="switch">
-            <input id="monochrome-switch" type="checkbox" />
-            <span></span>
-          </label>
-        </nav>
-        <nav>
-          <div class="max">
-            <span>Speed</span>
-          </div>
-          <label class="slider">
-            <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
-            <span></span>
-            <div class="tooltip"></div>
-          </label>
-        </nav>
+      <nav>
+        <div class="max">
+          <span>Monochrome</span>
+        </div>
+        <label class="switch">
+          <input id="monochrome-switch" type="checkbox" />
+          <span></span>
+        </label>
+      </nav>
+      <nav>
+        <div class="max">
+          <span>Speed</span>
+        </div>
+        <label class="slider">
+          <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
+          <span></span>
+          <div class="tooltip"></div>
+        </label>
+      </nav>
       <nav data-ui="#settings" class="right-align">
         <button class="transparent link">Close</button>
       </nav>
