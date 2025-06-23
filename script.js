@@ -3,12 +3,17 @@ const spinnerPath = document.querySelector('.spinner-path');
 const speedSlider = document.getElementById('speed-slider');
 const monochromeSwitch = document.getElementById('monochrome-switch');
 const body = document.body;
-const settingsDialog = document.getElementById('settings');
+const settingsDialog = document.getElementById('settings-dialog');
 const resetButton = document.getElementById('reset-button');
+const hideSettingsButtonSwitch = document.getElementById('hide-settings-button-switch');
+const settingsButton = document.getElementById('settings-button');
+const ambientModeSwitch = document.getElementById('ambient-mode-switch');
+const svg = document.querySelector('svg');
 
 const params = new URLSearchParams(window.location.search);
 const monochromeRaw = params.get('monochrome');
 const speedRaw = params.get('speed');
+const ambientModeRaw = params.get('ambient');
 
 const updateSpeed = (multiplier) => {
   spinner.style.animationDuration = `${1568.63 / multiplier}ms`;
@@ -26,10 +31,12 @@ const observeSettingsDialog = new MutationObserver((mutations) => {
       if (!isOpen) {
         const speed = parseFloat(speedSlider.value).toFixed(1);
         const isMono = monochromeSwitch.checked;
+        const isAmbient = ambientModeSwitch.checked;
 
         const newParams = new URLSearchParams();
         newParams.set('speed', speed);
         newParams.set('monochrome', isMono);
+        newParams.set('ambient', isAmbient);
 
         const newURL = `${location.pathname}?${newParams.toString()}`;
         history.replaceState(null, '', newURL);
@@ -37,17 +44,27 @@ const observeSettingsDialog = new MutationObserver((mutations) => {
     }
   }
 });
+const isDarkTheme = () => {
+  return body.classList.contains('dark');
+}
+const updateAmbientModeSwitchState = () => {
+  ambientModeSwitch.disabled = !isDarkTheme();
+}
 
 let initialSpeed = getSpeedFromURL();
 if (!isNaN(initialSpeed)) {
   speedSlider.value = initialSpeed;
   updateSpeed(initialSpeed);
 }
-
 if (monochromeRaw === 'true') {
   monochromeSwitch.checked = true;
   body.classList.add('monochrome');
 }
+if (ambientModeRaw === 'true' && isDarkTheme()) {
+  ambientModeSwitch.checked = true;
+  svg.setAttribute('filter', 'url(#glow)');
+}
+updateAmbientModeSwitchState();
 
 speedSlider.addEventListener('input', () => {
   const speed = parseFloat(speedSlider.value);
@@ -66,7 +83,38 @@ resetButton.addEventListener('click', () => {
   monochromeSwitch.checked = false;
   updateSpeed(1);
   body.classList.remove('monochrome');
+  hideSettingsButtonSwitch.checked = false;
+  settingsButton.classList.remove('hidden');
+  ambientModeSwitch.checked = false;
+  svg.removeAttribute('filter');
   history.replaceState(null, '', location.pathname);
+});
+hideSettingsButtonSwitch.addEventListener('change', () => {
+  const isHidden = hideSettingsButtonSwitch.checked;
+  if (isHidden) {
+    settingsButton.classList.add('hidden');
+  } else {
+    settingsButton.classList.remove('hidden');
+  }
+});
+document.querySelectorAll("li").forEach((li) => {
+  li.addEventListener("click", (event) => {
+    const switchInput = li.querySelector('input[type="checkbox"]');
+    if (!switchInput) return;
+    if (switchInput.disabled) return;
+    if (event.target.tagName === 'INPUT' || event.target.closest('label.slider')) {
+      return;
+    }
+    switchInput.checked = !switchInput.checked;
+    switchInput.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+});
+ambientModeSwitch.addEventListener('change', () => {
+  if (ambientModeSwitch.checked) {
+    svg.setAttribute('filter', 'url(#glow)');
+  } else {
+    svg.removeAttribute('filter');
+  }
 });
 
 observeSettingsDialog.observe(settingsDialog, { attributes: true });

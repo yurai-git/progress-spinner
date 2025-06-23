@@ -14,40 +14,72 @@
   <body>
     <header class="absolute-button">
       <nav>
-        <button data-ui="#settings" class="transparent circle">
+        <button id="settings-button" data-ui="#settings-dialog" class="transparent circle">
           <i>settings</i>
           <div class="tooltip bottom">Settings</div>
         </button>
       </nav>
     </header>
-    <dialog id="settings">
+    <dialog id="settings-dialog">
       <h5>Settings</h5>
       <nav>
-        <div class="max">
-          <span>Monochrome</span>
-        </div>
-        <label class="switch">
-          <input id="monochrome-switch" type="checkbox" />
-          <span></span>
-        </label>
+        <ul class="list">
+          <li class="ripple small-round">
+            <div class="max">
+              <h6 class="small">Monochrome</h6>
+            </div>
+            <label class="switch">
+              <input id="monochrome-switch" type="checkbox" />
+              <span></span>
+            </label>
+          </li>
+          <li class="ripple small-round">
+            <div class="max">
+              <h6 class="small">Speed</h6>
+              <div class="space"></div>
+              <label class="slider">
+                <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
+                <span></span>
+                <div class="tooltip"></div>
+              </label>
+            </div>
+          </li>
+          <li class="ripple small-round">
+            <div class="max">
+              <h6 class="small">Ambient mode</h6>
+              <div>Available in dark theme.</div>
+            </div>
+            <label class="switch">
+              <input id="ambient-mode-switch" type="checkbox" disabled />
+              <span></span>
+            </label>
+          </li>
+          <li class="ripple small-round">
+            <div class="max">
+              <h6 class="small">Hide settings button</h6>
+              <div>To see the settings button again, reload this page.</div>
+            </div>
+            <label class="switch">
+              <input id="hide-settings-button-switch" type="checkbox" />
+              <span></span>
+            </label>
+          </li>
+        </ul>
       </nav>
-      <nav>
-        <div class="max">
-          <span>Speed</span>
-        </div>
-        <label class="slider">
-          <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
-          <span></span>
-          <div class="tooltip"></div>
-        </label>
-      </nav>
-      <nav data-ui="#settings" class="right-align">
+      <nav data-ui="#settings-dialog" class="right-align">
         <button id="reset-button" class="border">Set to default</button>
         <button>Close</button>
       </nav>
     </dialog>
     <main class="responsive">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="64" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
         <g class="spinner">
           <path class="spinner-path" fill="none" d="M 14,1.5 A 12.5,12.5 0 1 1 1.5,14" stroke-width="3" stroke-linecap="round" />
         </g>
