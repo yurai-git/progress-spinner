@@ -9,11 +9,13 @@ const hideSettingsButtonSwitch = document.getElementById('hide-settings-button-s
 const settingsButton = document.getElementById('settings-button');
 const ambientModeSwitch = document.getElementById('ambient-mode-switch');
 const svg = document.querySelector('svg');
+const showSettingsButton = document.getElementById('show-settings-button');
 
 const params = new URLSearchParams(window.location.search);
 const monochromeRaw = params.get('monochrome');
 const speedRaw = params.get('speed');
 const ambientModeRaw = params.get('ambient');
+const settingsRaw = params.get('settings');
 
 const updateSpeed = (multiplier) => {
   spinner.style.animationDuration = `${1568.63 / multiplier}ms`;
@@ -29,21 +31,24 @@ const observeSettingsDialog = new MutationObserver((mutations) => {
     if (mutation.attributeName === 'open') {
       const isOpen = settingsDialog.hasAttribute('open');
       if (!isOpen) {
-        const speed = parseFloat(speedSlider.value).toFixed(1);
-        const isMono = monochromeSwitch.checked;
-        const isAmbient = ambientModeSwitch.checked;
-
-        const newParams = new URLSearchParams();
-        newParams.set('speed', speed);
-        newParams.set('monochrome', isMono);
-        newParams.set('ambient', isAmbient);
-
-        const newURL = `${location.pathname}?${newParams.toString()}`;
-        history.replaceState(null, '', newURL);
+        updateURL();
       }
     }
   }
 });
+const updateURL = () => {
+  const speed = parseFloat(speedSlider.value).toFixed(1);
+  const isMono = monochromeSwitch.checked;
+  const isAmbient = ambientModeSwitch.checked;
+
+  const newParams = new URLSearchParams();
+  newParams.set('speed', speed);
+  newParams.set('monochrome', isMono);
+  newParams.set('ambient', isAmbient);
+
+  const newURL = `${location.pathname}?${newParams.toString()}`;
+  history.replaceState(null, '', newURL);
+}
 const isDarkTheme = () => {
   return body.classList.contains('dark');
 }
@@ -63,6 +68,11 @@ if (monochromeRaw === 'true') {
 if (ambientModeRaw === 'true' && isDarkTheme()) {
   ambientModeSwitch.checked = true;
   svg.setAttribute('filter', 'url(#glow)');
+}
+if (settingsRaw === 'false') {
+  hideSettingsButtonSwitch.checked = true;
+  settingsButton.classList.add('hidden');
+  ui('#settings-button-snackbar');
 }
 updateAmbientModeSwitchState();
 
@@ -115,6 +125,11 @@ ambientModeSwitch.addEventListener('change', () => {
   } else {
     svg.removeAttribute('filter');
   }
+});
+showSettingsButton.addEventListener('click', () => {
+  hideSettingsButtonSwitch.checked = false;
+  settingsButton.classList.remove('hidden');
+  updateURL();
 });
 
 observeSettingsDialog.observe(settingsDialog, { attributes: true });
