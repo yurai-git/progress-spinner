@@ -3,76 +3,122 @@
   <head>
     <meta name="google-site-verification" content="pNeuwDuvIXcpZy7U_13SqvTMiNlnrHgpj6S72MGwFok" />
     <link href="https://cdn.jsdelivr.net/npm/beercss@3.11.20/dist/cdn/beer.min.css" rel="stylesheet" />
-    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.11.20/dist/cdn/beer.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <script defer type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.11.20/dist/cdn/beer.min.js"></script>
+    <script defer type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <script defer type="importmap">{"imports":{"@material/web/":"https://esm.run/@material/web/"}}</script>
+    <script defer type="module">import'@material/web/ripple/ripple.js';import'@material/web/focus/md-focus-ring.js'</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Progress spinner</title>
     <link rel="stylesheet" href="./style.css" />
     <script defer src="./script.js"></script>
   </head>
-  <body>
-    <header class="absolute-button">
+  <body style="margin:0;max-height:100vh">
+    <header style="position:absolute">
       <nav>
-        <button id="settings-button" data-ui="#settings-dialog" class="transparent circle">
+        <button id="settings-button" data-ui="#settings-dialog" class="no-wave transparent circle">
           <i>settings</i>
           <div class="tooltip bottom">Settings</div>
+          <md-ripple></md-ripple>
+          <md-focus-ring></md-focus-ring>
         </button>
       </nav>
     </header>
-    <dialog id="settings-dialog">
-      <h5>Settings</h5>
-      <nav>
-        <ul class="list">
-          <li class="ripple small-round">
-            <div class="max">
-              <h6 class="small">Monochrome</h6>
-            </div>
-            <label class="switch">
-              <input id="monochrome-switch" type="checkbox" />
-              <span></span>
-            </label>
-          </li>
-          <li class="ripple small-round">
-            <div class="max">
-              <h6 class="small">Speed</h6>
-              <div class="space"></div>
-              <label class="slider">
-                <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
-                <span></span>
-                <div class="tooltip"></div>
-              </label>
-            </div>
-          </li>
-          <li class="ripple small-round">
-            <div class="max">
-              <h6 class="small">Ambient mode</h6>
-              <div>Available in dark theme.</div>
-            </div>
-            <label class="switch">
-              <input id="ambient-mode-switch" type="checkbox" disabled />
-              <span></span>
-            </label>
-          </li>
-          <li class="ripple small-round">
-            <div class="max">
-              <h6 class="small">Hide settings button</h6>
-              <div>To see the settings button again, reload this page.</div>
-            </div>
-            <label class="switch">
-              <input id="hide-settings-button-switch" type="checkbox" />
-              <span></span>
-            </label>
-          </li>
-        </ul>
-      </nav>
-      <nav data-ui="#settings-dialog" class="right-align">
-        <button id="reset-button" class="border">Set to default</button>
-        <button>Close</button>
-      </nav>
+    <dialog id="settings-dialog" style="max-width:90vw;height:0;overflow:hidden;transition:all var(--speed3),0s background-color,height 500ms cubic-bezier(.38,1.21,.22,1),opacity 0s linear 500ms,transform 500ms cubic-bezier(.38,1.21,.22,1);transform:translate(-50%,-2rem)" class="no-padding no-elevate">
+      <div class="large-padding">
+        <nav>
+          <h5 class="max" style="line-height:2.5rem">Settings</h5>
+        </nav>
+        <nav class="surface round vertical-margin" style="gap:unset;height:50vh;overflow-x:hidden">
+          <ul class="list scroll-wrapper">
+            <li class="no-padding">
+              <button class="no-wave small-round padding transparent max">
+                <div class="max left-align">
+                  <h6 class="small">Monochrome</h6>
+                </div>
+                <label class="switch" style="pointer-events:none">
+                  <input tabindex="-1" id="monochrome-switch" type="checkbox" />
+                  <span></span>
+                </label>
+                <md-focus-ring></md-focus-ring>
+              </button>
+              <md-ripple></md-ripple>
+            </li>
+            <li class="padding">
+              <div style="user-select:none" class="max left-align">
+                <h6 class="small">Animation speed</h6>
+                <div class="space"></div>
+                <label class="slider">
+                  <input id="speed-slider" type="range" min=".1" max="3" value="1" step=".1" />
+                  <span></span>
+                  <div class="tooltip" style="gap:unset">x</div>
+                </label>
+              </div>
+              <md-ripple></md-ripple>
+            </li>
+            <li class="no-padding">
+              <button class="no-wave small-round padding transparent max">
+                <div class="max left-align">
+                  <h6 class="small">Ambient mode</h6>
+                  <div>Available in dark theme.</div>
+                </div>
+                <label class="switch" style="pointer-events:none">
+                  <input tabindex="-1" id="ambient-mode-switch" type="checkbox" disabled />
+                  <span></span>
+                </label>
+                <md-focus-ring></md-focus-ring>
+              </button>
+              <md-ripple></md-ripple>
+            </li>
+            <li>
+              <hr />
+            </li>
+            <li class="no-padding">
+              <button class="no-wave small-round padding transparent max">
+                <div class="max left-align">
+                  <h6 class="small">Hide settings button</h6>
+                  <div>To see the settings button again, reload this page.</div>
+                </div>
+                <label class="switch" style="pointer-events:none">
+                  <input tabindex="-1" id="hide-settings-button-switch" type="checkbox" />
+                  <span></span>
+                </label>
+                <md-focus-ring></md-focus-ring>
+              </button>
+              <md-ripple></md-ripple>
+            </li>
+            <!-- <li>
+              <hr />
+            </li>
+            <li class="no-padding">
+              <a tabindex="-1" href="https://github.com/yurai-git/progress-spinner" target="_blank" class="no-padding" style="min-block-size:unset">
+                <button class="no-wave small-round padding transparent max">
+                  <div class="max left-align">
+                    <h6 class="small">Repository on GitHub</h6>
+                  </div>
+                  <md-focus-ring></md-focus-ring>
+                </button>
+                <md-ripple></md-ripple>
+              </a>
+            </li> -->
+          </ul>
+        </nav>
+        <nav data-ui="#settings-dialog" class="right-align">
+          <button id="reset-button" class="no-wave border">
+            <span>Reset to default</span>
+            <md-ripple></md-ripple>
+            <md-focus-ring></md-focus-ring>
+          </button>
+          <button class="no-wave">
+            <span>Close</span>
+            <md-ripple></md-ripple>
+            <md-focus-ring></md-focus-ring>
+          </button>
+        </nav>
+      </div>
     </dialog>
-    <main class="responsive">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+    <main class="responsive" style="display:flex;justify-content:center;align-items:center;flex-direction:column;gap:16vh;z-index:-1;overflow:visible">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" style="width:40vw;height:40vh;overflow:visible">
         <filter id="glow">
           <feGaussianBlur stdDeviation="64" result="blur"/>
           <feMerge>
