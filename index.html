@@ -203,7 +203,8 @@
     </main>
     <div id="settings-button-snackbar" class="snackbar">
       <div class="max">Settings button is hidden by a URL parameter.</div>
-      <button id="show-settings-button" class="transparent absolute right">Show settings</button>
+      <button class="transparent absolute right">Show settings</button>
+      <button class="transparent" id="show-settings-button" style="pointer-events:none;opacity:0;height:0" tabindex="-1" aria-hidden="true">Show settings</button>
     </div>
   </body>
 </html>
